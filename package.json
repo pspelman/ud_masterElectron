@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "debug": "electron --inspect=5858 .",
     "watch": "nodemon --exec electron .",
     "reset": "git reset --hard"
   },
@@ -18,7 +19,10 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^9.0.0",
-    "nodemon": "^2.0.0"
+    "nodemon": "^2.0.6"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "colors": "^1.4.0"
+  }
 }
