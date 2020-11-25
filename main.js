@@ -1,15 +1,8 @@
 // Modules
 const {app, BrowserWindow} = require('electron')
 
-// Add the colors module
-const colors = require('colors');
-console.log(`colors: `, colors.rainbow("THESE ARE COLORS!"))
-
-// note: you can use native node modules in the npm process
-const bcrypt = require('bcrypt');
-bcrypt.hash('myPlaintextPassword', 10, function (err, hash) {
-    console.log(colors.rainbow(hash));
-});
+const windowStateKeeper = require('electron-window-state')
+let winState
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,15 +12,18 @@ let mainWindow
 function createWindow() {
 
     mainWindow = new BrowserWindow({
-        width: 1000, height: 800,
+        // width: 1000, height: 800,
+        // x: 0, y: 0,
+        width: winState.width, height: winState.height,
+        x: winState.x, y: winState.y,
         webPreferences: {nodeIntegration: true}
     })
-
+    winState.manage(mainWindow)
     // Load index.html into the new BrowserWindow
     mainWindow.loadFile('index.html')
 
     // Open DevTools - Remove for PRODUCTION!
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
@@ -36,7 +32,12 @@ function createWindow() {
 }
 
 // Electron `app` is ready
-app.on('ready', createWindow)
+app.on('ready', e => {
+    winState = windowStateKeeper({
+        defaultWidth: 1000, defaultHeight: 800,
+    })
+    createWindow();
+})
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
