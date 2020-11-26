@@ -1,5 +1,5 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, webContents} = require('electron')
 
 const windowStateKeeper = require('electron-window-state')
 let winState
@@ -12,10 +12,10 @@ let mainWindow
 function createWindow() {
 
     mainWindow = new BrowserWindow({
-        // width: 1000, height: 800,
-        // x: 0, y: 0,
-        width: winState.width, height: winState.height,
-        x: winState.x, y: winState.y,
+        width: 900, height: 800,
+        x: 0, y: 0,
+        // width: winState.width, height: winState.height,
+        // x: winState.x, y: winState.y,
         webPreferences: {nodeIntegration: true}
     })
     winState.manage(mainWindow)
@@ -24,6 +24,10 @@ function createWindow() {
 
     // Open DevTools - Remove for PRODUCTION!
     // mainWindow.webContents.openDevTools();
+
+    let wc = mainWindow.webContents  // assign a reference to the webContents object of the main window
+    console.log(`webContents:`, webContents.getAllWebContents())
+
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
