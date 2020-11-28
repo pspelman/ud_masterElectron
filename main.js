@@ -1,5 +1,5 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, dialog} = require('electron')
 
 // Add the colors module
 const colors = require('colors');
@@ -19,15 +19,51 @@ let mainWindow
 function createWindow() {
 
     mainWindow = new BrowserWindow({
-        width: 1000, height: 800,
+        width: 900, height: 800,
+        x: 0, y: 0,
         webPreferences: {nodeIntegration: true}
     })
+
 
     // Load index.html into the new BrowserWindow
     mainWindow.loadFile('index.html')
 
+    // note: add the dialog here
+    mainWindow.webContents.on('did-finish-load', () => {
+
+        const answers = ['Yes', 'No', 'Maybe']
+        dialog.showMessageBox({
+            title: 'Message Box',
+            message: 'Please select an option',
+            detail: 'Message details.',
+            buttons: answers,
+        }).then( result => {
+            console.log(`User selected ${answers[result.response]}`, )
+
+        })
+
+        // dialog.showSaveDialog({}).then( result => {
+        //     console.log(`result: `, result)
+        // })
+
+        // dialog.showOpenDialog({
+        //     buttonLabel: 'Select a photo',
+        //     defaultPath: app.getPath('home'),
+        //     options: ['multiSelection', 'createDirectory', 'openFile', 'openDirectory']
+        // }).then( result => {
+        //     console.log(`result: `, result)
+        // })
+
+        // dialog.showOpenDialog(mainWindow, {
+        //     buttonLabel: 'Select a photo',
+        //     defaultPath: app.getPath('home'),
+        // }).then( result => {
+        //     console.log(`result: `, result)
+        // })
+    })
+
     // Open DevTools - Remove for PRODUCTION!
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
@@ -36,7 +72,9 @@ function createWindow() {
 }
 
 // Electron `app` is ready
-app.on('ready', createWindow)
+app.on('ready', e => {
+    createWindow();
+})
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
