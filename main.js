@@ -19,7 +19,8 @@ let mainWindow
 function createWindow() {
 
     mainWindow = new BrowserWindow({
-        width: 1000, height: 800,
+        width: 900, height: 800,
+        x: 0, y: 0,
         webPreferences: {nodeIntegration: true}
     })
 
@@ -27,7 +28,7 @@ function createWindow() {
     mainWindow.loadFile('index.html')
 
     // Open DevTools - Remove for PRODUCTION!
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
@@ -36,7 +37,9 @@ function createWindow() {
 }
 
 // Electron `app` is ready
-app.on('ready', createWindow)
+app.on('ready', e => {
+    createWindow();
+})
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
