@@ -1,5 +1,6 @@
 // Modules
 const {app, BrowserWindow, session} = require('electron')
+const unhandled = require('electron-unhandled');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -35,10 +36,13 @@ function createWindow() {
         downloadItem.on('updated', (e, state) => {
             let received = downloadItem.getReceivedBytes()
             if (state === 'progressing' && received ) {  // note: check if it is progressing and if anything has been received
+                let progress = Math.round((received / fileSize) * 100);
                 if (!completed) {
+                    console.log(`state: `, state, 'progress: ', progress)
+                    webContents.executeJavaScript(`window.progress.value = ${progress}`)
+                }
+                if (progress >= 100) {
                     completed = true
-                    let progress = Math.round((received / fileSize) * 100);
-                    console.log(`${progress}% complete`)
                 }
             }
         })
