@@ -1,5 +1,5 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, globalShortcut} = require('electron')
 
 // Add the colors module
 const colors = require('colors');
@@ -29,6 +29,14 @@ function createWindow() {
 
     // Open DevTools - Remove for PRODUCTION!
     // mainWindow.webContents.openDevTools();
+
+    // globalShortcut.register('G', () => {
+    //     console.log(`user pressed G`, )
+    // })
+
+    globalShortcut.register('CommandOrControl+G', () => {
+        console.log(`user pressed G with a combination key`, )
+    })
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
