@@ -1,8 +1,5 @@
 // Modules
-const {app, BrowserWindow, webContents} = require('electron')
-
-const windowStateKeeper = require('electron-window-state')
-let winState
+const {app, BrowserWindow, session} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -11,23 +8,44 @@ let mainWindow
 // Create a new BrowserWindow when `app` is ready
 function createWindow() {
 
+    // note: create a reference to the default session
+    let ses = session.defaultSession
+
     mainWindow = new BrowserWindow({
         width: 900, height: 800,
         x: 0, y: 0,
-        // width: winState.width, height: winState.height,
-        // x: winState.x, y: winState.y,
         webPreferences: {nodeIntegration: true}
     })
-    winState.manage(mainWindow)
+
+
     // Load index.html into the new BrowserWindow
     mainWindow.loadFile('index.html')
 
+    ses.on('will-download', (e, downloadItem, webContents) => {
+        console.log(`Starting download`,)
+        let fileName = downloadItem.getFilename();
+        let fileSize = downloadItem.getTotalBytes();
+
+        console.log(`file: `, fileName)
+        console.log(`size: `, fileSize)
+
+        // note: set the save path to auto download on click
+        downloadItem.setSavePath(app.getPath('desktop'), `/${fileName}`)
+        let completed = false
+        downloadItem.on('updated', (e, state) => {
+            let received = downloadItem.getReceivedBytes()
+            if (state === 'progressing' && received ) {  // note: check if it is progressing and if anything has been received
+                if (!completed) {
+                    completed = true
+                    let progress = Math.round((received / fileSize) * 100);
+                    console.log(`${progress}% complete`)
+                }
+            }
+        })
+    })
+
     // Open DevTools - Remove for PRODUCTION!
     // mainWindow.webContents.openDevTools();
-
-    let wc = mainWindow.webContents  // assign a reference to the webContents object of the main window
-    console.log(`webContents:`, webContents.getAllWebContents())
-
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
@@ -37,9 +55,6 @@ function createWindow() {
 
 // Electron `app` is ready
 app.on('ready', e => {
-    winState = windowStateKeeper({
-        defaultWidth: 1000, defaultHeight: 800,
-    })
     createWindow();
 })
 
