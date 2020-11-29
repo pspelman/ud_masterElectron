@@ -9,7 +9,8 @@ let mainWindow
 function createWindow() {
 
   console.log(screen)
-  console.log(`primary display: `, screen.getPrimaryDisplay())
+  let primaryDisplay = screen.getPrimaryDisplay();
+  console.log(`primary display: `, primaryDisplay)
 
   let displays = screen.getAllDisplays();
   console.log(`all displays: `, displays)
@@ -27,8 +28,9 @@ function createWindow() {
   })
 
   mainWindow = new BrowserWindow({
-    width: 900, height: 800,
-    x: 100, y: 100,
+    x: primaryDisplay.bounds.x,
+    y: primaryDisplay.bounds.y,
+    width: primaryDisplay.size.width/2, height: primaryDisplay.size.height,
     webPreferences: {nodeIntegration: true}
   })
 
