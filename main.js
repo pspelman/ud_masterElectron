@@ -30,6 +30,13 @@ let menuItem1 = new MenuItem({
 // Note: we can use the buildFromTemplate method instead
 let mainMenu = new Menu.buildFromTemplate(require('./mainMenu'))
 
+
+// Note: context menu - we will have this triggered by a right click
+let contextMenu = Menu.buildFromTemplate([
+    {label: 'Item 1'},
+    {role: 'editMenu'},
+])
+
 // mainMenu.append(menuItem1)
 
 // Create a new BrowserWindow when  `app` is ready
@@ -46,6 +53,9 @@ function createWindow() {
 
     // Open DevTools - Remove for PRODUCTION!
     // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.on('context-menu', e => {
+        contextMenu.popup(mainWindow)
+    })
 
     Menu.setApplicationMenu(mainMenu)
 
