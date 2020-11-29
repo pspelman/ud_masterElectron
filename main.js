@@ -1,5 +1,6 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Menu, MenuItem} = require('electron')
+
 
 // Add the colors module
 const colors = require('colors');
@@ -15,7 +16,40 @@ bcrypt.hash('myPlaintextPassword', 10, function (err, hash) {
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-// Create a new BrowserWindow when `app` is ready
+// let mainMenu = new Menu()
+
+let menuItem1 = new MenuItem({
+    label: 'Electron',
+    submenu: [
+        {label: 'Item 1'},
+        {label: 'Item 2', submenu: [{label: 'subItem 1'}]},
+        {label: 'Item 3'},
+    ]
+})
+
+// Note: we can use the buildFromTemplate method instead
+let mainMenu = new Menu.buildFromTemplate([
+    {
+        label: 'Electron',
+        submenu: [
+            {label: 'Item 1'},
+            {label: 'Item 2', submenu: [{ label: 'Sub Item 1'}]},
+            {label: 'Item 3'},
+        ]
+    },
+    {
+        label: 'Actions',
+        submenu: [
+            {label: 'Action 1'},
+            {label: 'Action 2'},
+            {label: 'Action 3'},
+        ]
+    }
+])
+
+// mainMenu.append(menuItem1)
+
+// Create a new BrowserWindow when  `app` is ready
 function createWindow() {
 
     mainWindow = new BrowserWindow({
@@ -29,6 +63,8 @@ function createWindow() {
 
     // Open DevTools - Remove for PRODUCTION!
     // mainWindow.webContents.openDevTools();
+
+    Menu.setApplicationMenu(mainMenu)
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
