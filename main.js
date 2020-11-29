@@ -1,5 +1,6 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const electron = require('electron')
+const {app, BrowserWindow} = electron
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -23,6 +24,14 @@ function createWindow() {
     // Listen for window being closed
     mainWindow.on('closed', () => {
         mainWindow = null
+    })
+
+    electron.powerMonitor.on('resume', e => {
+        console.log(`system just woke back up!`, )
+        if(!mainWindow) createWindow()  // if there's no mainWindow, call to createWindow()
+    })
+    electron.powerMonitor.on('suspend', e => {
+        console.log(`Saving some data`, )  // save data before the computer goes to sleep
     })
 }
 
