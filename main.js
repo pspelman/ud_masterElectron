@@ -1,16 +1,6 @@
 // Modules
 const {app, BrowserWindow} = require('electron')
 
-// Add the colors module
-const colors = require('colors');
-console.log(`colors: `, colors.rainbow("THESE ARE COLORS!"))
-
-// note: you can use native node modules in the npm process
-const bcrypt = require('bcrypt');
-bcrypt.hash('myPlaintextPassword', 10, function (err, hash) {
-    console.log(colors.rainbow(hash));
-});
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
