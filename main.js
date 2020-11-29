@@ -7,9 +7,20 @@ let mainWindow, tray
 
 function createTray() {
     tray = new Tray('trayTemplate@2x.png')
+    tray.setToolTip('Tray details')
+    tray.on('click', e => {
+        // check for modifier key - if shift key is held down during the click, quit
+        if (e.shiftKey) {
+            app.quit();
+        } else {
+            mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();  // Note: this will toggle the visibility of the main window from tray icon click
+        }
+    })
 }
 // Create a new BrowserWindow when `app` is ready
 function createWindow() {
+    // create the tray icon
+    createTray()
 
     mainWindow = new BrowserWindow({
         width: 900, height: 800,
