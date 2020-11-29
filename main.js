@@ -1,10 +1,13 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Tray} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow, tray
 
+function createTray() {
+    tray = new Tray('trayTemplate@2x.png')
+}
 // Create a new BrowserWindow when `app` is ready
 function createWindow() {
 
