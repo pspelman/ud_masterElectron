@@ -6,15 +6,40 @@
     <title>Hello World!</title>
     <style>
       html { font-family: sans-serif; background: #2B2E3B; color: #9FEAF9; }
+      a { color: white; }
     </style>
   </head>
   <body>
 
     <h1>Hello Electron!</h1>
     <p>Build cross-platform desktop apps with JavaScript, HTML, and CSS</p>
+    <h3>
+<!--      <a href="https://developer.mozilla.org" target="_blank">New Window</a>-->
+      <a href="#" onclick="newWin()">New Window</a>
+      <a href="#" id="BtnCloseWindow" onclick="closeWin()" hidden>Close Window</a>
+      <a href="#" id="BtnStyleWindow" onclick="styleNewWin()" hidden>Bad Fonts</a>
+
+    </h3>
 
     <script>
       // You can also require other files to run in this process
+      let win
+      const newWin = () => {
+        win = window.open('https://developer.mozilla.org')
+        document.getElementById('BtnCloseWindow').style.display = "block"
+        document.getElementById('BtnStyleWindow').style.display = "block"
+      }
+
+      const closeWin = () => {
+        document.getElementById('BtnCloseWindow').style.display = "none"
+        document.getElementById('BtnStyleWindow').style.display = "none"
+        win ? win.close() : null
+      }
+
+      const styleNewWin = () => {
+        win ? win.eval("document.getElementsByTagName('h1')[0].style.fontFamily = 'Comic Sans MS'") : null
+      }
+
       require('./renderer.js')
     </script>
   </body>

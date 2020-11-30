@@ -18,7 +18,7 @@ function createWindow() {
     mainWindow.loadFile('index.html')
 
     // Open DevTools - Remove for PRODUCTION!
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
@@ -30,6 +30,7 @@ function createWindow() {
 app.on('ready', e => {
     createWindow();
 })
+
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
