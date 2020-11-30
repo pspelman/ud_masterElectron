@@ -21,13 +21,13 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
 
     mainWindow.webContents.on('did-finish-load', e => {  // send a message to the renderer once the mainWindow is done loading
-        let rayMsg = {
-            from: 'Ray',
-            message: 'I am Ray... this is mail.',
-            priority: 1,
-        }
-        mainWindow.webContents.send('mailbox', 'Sent to mailbox from MAIN.js --> You have mail')
-        mainWindow.webContents.send('mailbox', rayMsg)
+        // let rayMsg = {
+        //     from: 'Ray',
+        //     message: 'I am Ray... this is mail.',
+        //     priority: 1,
+        // }
+        // mainWindow.webContents.send('mailbox', 'Sent to mailbox from MAIN.js --> You have mail')
+        // mainWindow.webContents.send('mailbox', rayMsg)
     })
 
     // Listen for window being closed
@@ -35,6 +35,14 @@ function createWindow() {
         mainWindow = null
     })
 }
+
+ipcMain.on('sync-message', (event, args) => {
+    console.log(`sync-message: `, args)
+    setTimeout(() => {
+        event.returnValue = 'A sync response from the main process'
+    }, 4000)
+    // event.returnValue = 'A sync response from the main process'
+})
 
 ipcMain.on('channel1', (e, args) => {
     console.log(`IPC event args: `, args)
