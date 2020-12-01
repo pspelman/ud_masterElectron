@@ -19,15 +19,22 @@
 <p>
     Using Node.js
     <script>
-      document.write(process.versions.node)
+      document.write(versions.node)
     </script>
     and Electron
-    <script>document.write(process.versions.electron)</script>
+    <script>document.write(versions.electron)</script>
 </p>
+
+<br><label for="content">CONTENT</label><textarea name="content" id="content" cols="80" rows="8"></textarea>
+<br><button id="save" onclick="saveText()">Save Content</button>
 
 <script>
   // You can also require other files to run in this process
-  require('./renderer.js')
+  const saveText = ev => {
+    const text = document.getElementById('content').value
+    console.log(`going to save: `, text)
+    window.writeToFile(text)
+  }
 </script>
 </body>
 </html>

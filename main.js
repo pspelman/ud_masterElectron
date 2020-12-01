@@ -1,5 +1,5 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,6 +28,8 @@ function createWindow() {
         mainWindow = null
     })
 }
+
+ipcMain.handle('desktop-path', () => app.getPath('desktop'))
 
 // Electron `app` is ready
 app.on('ready', e => {
