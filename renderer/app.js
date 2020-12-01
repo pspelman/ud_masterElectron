@@ -1,3 +1,13 @@
-// This file is required by the main.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+// DOM nodes
+let showModal = document.getElementById('show-modal'),
+  closeModal = document.getElementById('close-modal'),
+  modal = document.getElementById('modal')
+
+showModal.addEventListener('click', e => {
+  console.log(`showing modal`, )
+  modal.style.display = 'flex'
+})
+closeModal.addEventListener('click', e => {
+  console.log(`hiding modal`, )
+  modal.style.display = 'none'
+})
