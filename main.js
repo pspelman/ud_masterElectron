@@ -11,14 +11,17 @@ function createWindow() {
     mainWindow = new BrowserWindow({
         width: 900, height: 800,
         x: 0, y: 0,
-        webPreferences: {nodeIntegration: true}
+        webPreferences: {
+            nodeIntegration: false,
+            preload: `${__dirname}/preload.js`
+        }
     })
 
     // Load index.html into the new BrowserWindow
     mainWindow.loadFile('index.html')
 
     // Open DevTools - Remove for PRODUCTION!
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
