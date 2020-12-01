@@ -12,10 +12,28 @@
 
     <h1>Hello Electron!</h1>
     <p>Build cross-platform desktop apps with JavaScript, HTML, and CSS</p>
+    <button onclick="makeUpper()">Make Clipboard Uppercase</button>
+    <button onclick="showImage()">Show Image from Clipboard</button>
+    <img src="" alt="" width="100%" id="cbImage">
 
     <script>
       // You can also require other files to run in this process
-      require('./renderer.js')
+      const {clipboard} = require('electron')
+
+      console.log(clipboard.readText())
+
+      const makeUpper = e => {
+        let cbText = clipboard.readText()
+        clipboard.writeText(cbText.toUpperCase())
+      }
+
+      const showImage = () => {
+        let image = clipboard.readImage()
+        document.getElementById('cbImage').src = image.toDataURL()
+      }
+
+
     </script>
   </body>
 </html>
+

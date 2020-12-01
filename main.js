@@ -1,5 +1,5 @@
 // Modules
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, clipboard} = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -7,7 +7,7 @@ let mainWindow
 
 // Create a new BrowserWindow when `app` is ready
 function createWindow() {
-
+    clipboard.writeText("hello from the main process!")
     mainWindow = new BrowserWindow({
         width: 900, height: 800,
         x: 0, y: 0,
@@ -18,7 +18,7 @@ function createWindow() {
     mainWindow.loadFile('index.html')
 
     // Open DevTools - Remove for PRODUCTION!
-    // mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     // Listen for window being closed
     mainWindow.on('closed', () => {
