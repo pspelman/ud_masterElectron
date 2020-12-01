@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "debug": "electron --inspect=5858 .",
-    "watch": "nodemon --exec electron -e js,jade,html .",
+    "watch": "nodemon --exec electron -e js,jade,html,css .",
     "reset": "git reset --hard"
   },
   "repository": "https://github.com/stackacademytv/master-electron",
