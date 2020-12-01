@@ -1,21 +1,64 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'">
     <title>Hello World!</title>
     <style>
-      html { font-family: sans-serif; background: #2B2E3B; color: #9FEAF9; }
+        html {
+            font-family: sans-serif;
+            background: #2B2E3B;
+            color: #9FEAF9;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
 
-    <h1>Hello Electron!</h1>
-    <p>Build cross-platform desktop apps with JavaScript, HTML, and CSS</p>
+<h1>Hello Electron!</h1>
+<p>Build cross-platform desktop apps with JavaScript, HTML, and CSS</p>
+<button onclick="toPng()">PNG</button>
+<button onclick="toJpeg()">JPEG</button>
+<button onclick="toTag()">Show</button>
+<br>
+<img src="" alt="" id="preview">
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
-  </body>
+<script>
+  // You can also require other files to run in this process
+  const {nativeImage, ipcRenderer} = require('electron')
+  const fs = require('fs')
+
+  const saveToDesktop = async (data, extension) => {
+    // Note: need to get the path to the desktop via IPC to the main process
+    let desktopPath = await ipcRenderer.invoke('app-path')
+    console.log(`got path: `, desktopPath)
+    fs.writeFile(`${desktopPath}/splash.${extension}`, data, console.log)  // this is where the file writing takes place
+  }
+
+  const splash = nativeImage.createFromPath(`${__dirname}/splash.png`)
+  console.log(`image size: `, splash.getSize())
+
+  let exportQuality = 50
+  const toPng = e => {
+    console.log(`making pngSplash`,)
+    let outSplash = splash.toPNG()  // returns an image BUFFER --> need to do something with it
+    saveToDesktop(outSplash, 'png')
+  }
+
+  const toJpeg = e => {
+    console.log(`making jpegSplash at ${exportQuality}% quality`,)
+    let outSplash = splash.toJPEG(exportQuality)    // returns an image BUFFER --> need to do something with it
+                                                    // toJPEG() requires a specification of the quality of the image 0-100
+    saveToDesktop(outSplash, 'jpeg')
+  }
+
+  const toTag = e => {
+    // let outSplash = splash.toDataURL()
+    let size = splash.getSize()
+
+    let outSplash = splash.resize({width: Math.round(size.width / 4), height: Math.round(size.height / 4)}).toDataURL()
+    document.getElementById('preview').src = outSplash
+  }
+
+</script>
+</body>
 </html>
