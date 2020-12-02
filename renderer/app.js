@@ -1,5 +1,6 @@
 // Modules
 const {ipcRenderer} = require('electron')
+const items = require('./items.js')
 
 // DOM nodes
 let showModal = document.getElementById('show-modal'),
@@ -94,6 +95,9 @@ addItem.addEventListener('click', e => {
 // listen for new item from main process
 ipcRenderer.on('new-item-success', (e, newItem) => {
   console.log(`new Item from main process: `, newItem)
+  // Now that the new item has been created, pass to the items module to handle
+  items.addItem(newItem)
+
   toggleAddButton()
 
 });
