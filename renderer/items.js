@@ -23,6 +23,18 @@ function addItemToDOM(item) {
   items.appendChild(itemNode)
 }
 
+exports.clearItems = () => {
+  console.log(`clearing the items`, )
+  items.innerHTML = ""
+}
+
+exports.showItems = items => {
+  // clear the dom
+  this.clearItems()
+  items.forEach(item => addItemToDOM(item));
+  // add each item in items to the DOM
+}
+
 // Add new item
 exports.addItem = item => {
   // Create the new DOM node

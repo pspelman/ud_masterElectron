@@ -10,11 +10,9 @@ let mainWindow
 ipcMain.handle('new-item', (e, itemUrl) => {
   console.log(`trying to add new value: `, itemUrl)
 
-  // get the new item and send back
-  readItem(itemUrl, item => {
+  readItem(itemUrl, item => {  // get the new item and send back
     e.sender.send('new-item-success', item)
   })
-
 });
 
 
@@ -40,8 +38,6 @@ function createWindow() {
   mainWindow.webContents.openDevTools();
 
   state.manage(mainWindow)  // tell the state keeper it is supposed to be keeping track of this window
-
-
   // Listen for window being closed
   mainWindow.on('closed', () => {
     mainWindow = null

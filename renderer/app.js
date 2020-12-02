@@ -5,12 +5,33 @@ const items = require('./items.js')
 // DOM nodes
 let showModal = document.getElementById('show-modal'),
   closeModal = document.getElementById('close-modal'),
+  clrItems = document.getElementById('clear-items'),
   modal = document.getElementById('modal'),
   addItem = document.getElementById('add-item'),
   itemUrl = document.getElementById('url'),
-  itemsDiv = document.getElementById('items')
+  itemsDiv = document.getElementById('items'),
+  search = document.getElementById('search'),
   allItems = new Set(),
   exampleUrl = "https://placehold.it/500/500"
+
+function checkForTerm(itemEntry, searchTerm) {
+  let containsSearch = itemEntry['title'].toLowerCase().indexOf(searchTerm.toLowerCase());
+  console.log(`indexOf(${searchTerm}): ${containsSearch}`)
+  return containsSearch > -1
+}
+
+// listen and filter the search bar
+search.addEventListener('keyup', e => {
+  console.log(`going to filter entries for `, search.value)
+  let stuff = items.storage.filter(item => checkForTerm(item, search.value))
+  console.log(`entries with the search term: `, stuff)
+  if (stuff.length) {
+    items.showItems(stuff);
+  } else {
+    items.showAllItems()
+  }
+
+})
 
 // enable / disable submission buttons
 const toggleAddButton = () => {
@@ -53,7 +74,9 @@ function hideModal() {
 closeModal.addEventListener('click', e => {
   hideModal();
 })
-
+clrItems.addEventListener('click', ev => {
+  items.clearItems()
+})
 
 function addItemToPage(newItem) {
   let newDiv = `
