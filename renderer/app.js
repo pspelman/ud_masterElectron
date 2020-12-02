@@ -20,9 +20,7 @@ function checkForTerm(itemEntry, searchTerm) {
   return containsSearch > -1
 }
 
-// listen and filter the search bar
-search.addEventListener('keyup', e => {
-  console.log(`going to filter entries for `, search.value)
+function phils_first_solution() {
   let stuff = items.storage.filter(item => checkForTerm(item, search.value))
   console.log(`entries with the search term: `, stuff)
   if (stuff.length) {
@@ -30,6 +28,16 @@ search.addEventListener('keyup', e => {
   } else {
     items.showAllItems()
   }
+}
+
+// listen and filter the search bar
+search.addEventListener('keyup', e => {
+  // console.log(`going to filter entries for `, search.value)
+  Array.from(document.getElementsByClassName('read-item')).forEach( item => {
+    let hasMatch = item.innerText.toLowerCase().includes(search.value)
+    item.style.display = hasMatch ? 'flex' : 'none'  // this will set the display to NONE if hasMatch is false and flex if it is true
+  })
+  // phils_first_solution();
 
 })
 
