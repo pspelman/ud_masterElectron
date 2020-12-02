@@ -1,9 +1,18 @@
 // DOM Nodes
 let items = document.getElementById('items')
 
-// Add new item
-exports.addItem = item => {
-  // Create the new DOM node
+// set up local storage
+exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
+if (exports.storage) {
+  exports.storage.forEach((item) => addItemToDOM(item))
+}
+
+// persist storage
+exports.save = () => {
+  localStorage.setItem('readit-items', JSON.stringify(this.storage))
+};
+
+function addItemToDOM(item) {
   let itemNode = document.createElement('div')
 
   // assign the read-item class
@@ -12,5 +21,15 @@ exports.addItem = item => {
 
   // add the new node to the other "items"
   items.appendChild(itemNode)
+}
+
+// Add new item
+exports.addItem = item => {
+  // Create the new DOM node
+  addItemToDOM(item);
+  console.log(`pushing to storage`, )
+  this.storage.push(item)
+  console.log(`saving local storage`, )
+  this.save()
 
 }

@@ -44,10 +44,14 @@ showModal.addEventListener('click', e => {
   itemUrl.focus()  // note: focus on the input
 })
 
-closeModal.addEventListener('click', e => {
+function hideModal() {
   console.log(`hiding modal`,)
   clearUrlEntry();
   modal.style.display = 'none'
+}
+
+closeModal.addEventListener('click', e => {
+  hideModal();
 })
 
 
@@ -94,11 +98,10 @@ addItem.addEventListener('click', e => {
 
 // listen for new item from main process
 ipcRenderer.on('new-item-success', (e, newItem) => {
-  console.log(`new Item from main process: `, newItem)
+
   // Now that the new item has been created, pass to the items module to handle
   items.addItem(newItem)
-
+  hideModal()
   toggleAddButton()
 
 });
-console.log(`all Items: `, allItems)
