@@ -1,23 +1,47 @@
 // DOM Nodes
 let items = document.getElementById('items')
 
-const _select = (item) => {
+// set up local storage
+exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
+
+// persist storage
+exports.save = () => {
+  localStorage.setItem('readit-items', JSON.stringify(this.storage))
+};
+
+exports.select = e => {
+  // first remove any selected item
+  console.log(`removing any selected items`)
+  if (e.currentTarget.classList.contains('selected')) {
+    e.currentTarget.classList.remove('selected')
+    return
+  }
+
   try {
-    if (item.classList.contains('selected')) {
-      console.log(`going to UNselect this item`,);
-      item.classList.remove('selected');
-      return
-    }
-    // let previousSelectedItem =document.getElementsByClassName('read-item selected')[0];
     document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
   } catch (e) {}
-  item.classList.add('selected');
-
+  // add the clicked item
+  e.currentTarget.classList.add('selected')
 }
 
-const addItemToDOM = (item) => {
+exports.clearItems = () => {
+  console.log(`clearing the items`, )
+  items.innerHTML = ""
+}
+
+exports.showItems = items => {
+  // clear the dom
+  this.clearItems()
+  // items.forEach(item => addItemToDOM(item));
+  items.forEach(item => this.addItem(item));
+  // add each item in items to the DOM
+}
+
+
+/*
+  // Create the new DOM node
   let itemNode = document.createElement('div')
-  itemNode.addEventListener('click', () => _select(itemNode))
+  itemNode.addEventListener('click', () => select(itemNode))
   // itemNode.addEventListener('click', () => itemNode.classList.add('selected'))
   // assign the read-item class
   itemNode.setAttribute('class', 'read-item')
@@ -31,53 +55,37 @@ const addItemToDOM = (item) => {
   // if (document.getElementsByClassName('read-item').length === 1) {
   //   itemNode.classList.add('selected')
   // }
+*/
+// Add new item
+exports.addItem = (item, newItem = false) => {
+  // new item node
+  let itemNode = document.createElement('div')
 
-}
+  // attach a click listener to select / unselect
+  itemNode.addEventListener('click', this.select)
 
-// set up local storage
-exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
-if (exports.storage) {
-  exports.storage.forEach((item) => addItemToDOM(item))
-}
+  // add HTML for the class and content
+  itemNode.setAttribute('class', 'read-item')
+  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
 
-// persist storage
-exports.save = () => {
-  localStorage.setItem('readit-items', JSON.stringify(this.storage))
+  // add it to the other items
+  items.appendChild(itemNode)
+
+  // if it's the first one, default select it
+  if (document.getElementsByClassName('read-item').length === 1) {
+    itemNode.classList.add('selected')
+  }
+
+  // only save if it is new
+  console.log(`pushing to storage`,);
+  if (newItem) {
+    this.storage.push(item);
+    console.log(`saving local storage`,)
+    this.save()
+  }
 };
 
-exports.select = e => {
-  // first remove any selected item
-  console.log(`removing any selected items`, )
-  document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
-  // add the clicked item
-  console.log(`setting item to selected`, )
-  // e.currentTarget.classList.add('selected')
+if (exports.storage) {
+  // exports.storage.forEach((item) => addItemToDOM(item))
+  exports.storage.forEach((item) => this.addItem(item, false))
 }
-
-exports.clearItems = () => {
-  console.log(`clearing the items`, )
-  items.innerHTML = ""
-}
-
-exports.showItems = items => {
-  // clear the dom
-  this.clearItems()
-  items.forEach(item => addItemToDOM(item));
-  // add each item in items to the DOM
-}
-
-exports.select = item => {
-  select(item);
-}
-
-// Add new item
-exports.addItem = item => {
-  // Create the new DOM node
-  addItemToDOM(item);
-  console.log(`pushing to storage`, )
-  this.storage.push(item)
-  console.log(`saving local storage`, )
-  this.save()
-
-}
-
