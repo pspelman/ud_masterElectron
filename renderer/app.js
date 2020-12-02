@@ -1,11 +1,15 @@
+// Modules
+const {ipcRenderer} = require('electron')
+
 // DOM nodes
 let showModal = document.getElementById('show-modal'),
   closeModal = document.getElementById('close-modal'),
   modal = document.getElementById('modal'),
   addItem = document.getElementById('add-item'),
   itemUrl = document.getElementById('url'),
-  items = new Set()
-
+  itemsDiv = document.getElementById('items')
+  allItems = new Set(),
+  exampleUrl = "https://placehold.it/500/500"
 
 
 function clearUrlEntry() {
@@ -14,7 +18,7 @@ function clearUrlEntry() {
 
 // Modal interaction
 itemUrl.addEventListener('keyup', e => {  // allow enter key to trigger add
-  if(e.key === 'Enter') addItem.click()
+  if (e.key === 'Enter') addItem.click()
 })
 
 showModal.addEventListener('click', e => {
@@ -29,16 +33,43 @@ closeModal.addEventListener('click', e => {
 })
 
 
+function addItemToPage(newItem) {
+  let newDiv = `
+        <div class="read-item">
+          <img src="${newItem}" alt="placeholder for ${newItem}">
+          <h2>${newItem}</h2>
+        </div>`
+  itemsDiv.innerHTML += newDiv
+}
+
+function addNewItem(newItem) {
+  console.log(`adding: `, newItem)
+  // add the item to the list of items
+  if (allItems.size !== allItems.add(newItem).size) {
+    console.log(`a new item was added | creating the HTML`, );
+    addItemToPage(newItem)
+  }
+  // if (allItems.size !== allItems.add('new poo').size) {
+  //   console.log('YES')
+  // } else {
+  //   console.log('NO')
+  // }
+  console.log(`all items: `, allItems)
+  // create a new HTML element for the item
+  // add the item to the existing page
+}
+
 // Handle new item
 addItem.addEventListener('click', e => {
   if (itemUrl.value) {
     // add the URL to the list of URLs
     let newItem = itemUrl.value
-    console.log(`adding: `, newItem)
+    addNewItem(newItem)
     // clear the field
     clearUrlEntry();
-    setTimeout(()=>{
+    setTimeout(() => {
       alert(`${newItem} added to list`)
     }, 1)
   }
 })
+console.log(`all Items: `, allItems)
