@@ -1,6 +1,24 @@
 // DOM Nodes
 let items = document.getElementById('items')
 
+const addItemToDOM = (item) => {
+  let itemNode = document.createElement('div')
+  itemNode.addEventListener('click', this.select)
+  // assign the read-item class
+  itemNode.setAttribute('class', 'read-item')
+  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
+
+  // add the new node to the other "items"
+  // itemNode.addEventListener('click', () => console.log(`clicked ${itemNode.innerHTML}`, )
+  // )
+  items.appendChild(itemNode);
+  // if it is the first item, select it
+  // if (document.getElementsByClassName('read-item').length === 1) {
+  //   itemNode.classList.add('selected')
+  // }
+
+}
+
 // set up local storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
 if (exports.storage) {
@@ -12,15 +30,13 @@ exports.save = () => {
   localStorage.setItem('readit-items', JSON.stringify(this.storage))
 };
 
-function addItemToDOM(item) {
-  let itemNode = document.createElement('div')
-
-  // assign the read-item class
-  itemNode.setAttribute('class', 'read-item')
-  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
-
-  // add the new node to the other "items"
-  items.appendChild(itemNode)
+exports.select = e => {
+  // first remove any selected item
+  console.log(`removing any selected items`, )
+  document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
+  // add the clicked item
+  console.log(`setting item to selected`, )
+  // e.currentTarget.classList.add('selected')
 }
 
 exports.clearItems = () => {
@@ -35,6 +51,7 @@ exports.showItems = items => {
   // add each item in items to the DOM
 }
 
+
 // Add new item
 exports.addItem = item => {
   // Create the new DOM node
@@ -45,3 +62,4 @@ exports.addItem = item => {
   this.save()
 
 }
+
