@@ -1,9 +1,24 @@
 // DOM Nodes
 let items = document.getElementById('items')
 
+const select = (item) => {
+  try {
+    if (item.classList.contains('selected')) {
+      console.log(`going to UNselect this item`,);
+      item.classList.remove('selected');
+      return
+    }
+    // let previousSelectedItem =document.getElementsByClassName('read-item selected')[0];
+    document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
+  } catch (e) {}
+  item.classList.add('selected');
+
+}
+
 const addItemToDOM = (item) => {
   let itemNode = document.createElement('div')
-  itemNode.addEventListener('click', this.select)
+  itemNode.addEventListener('click', () => select(itemNode))
+  // itemNode.addEventListener('click', () => itemNode.classList.add('selected'))
   // assign the read-item class
   itemNode.setAttribute('class', 'read-item')
   itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
