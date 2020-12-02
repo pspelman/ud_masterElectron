@@ -49,6 +49,10 @@ header {
     flex-grow: 1;
 }
 
+main {
+    flex-grow: 1;
+}
+
 #no-items {
     font-weight: bold;
     color: silver;
