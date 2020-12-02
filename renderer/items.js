@@ -1,7 +1,7 @@
 // DOM Nodes
 let items = document.getElementById('items')
 
-const select = (item) => {
+const _select = (item) => {
   try {
     if (item.classList.contains('selected')) {
       console.log(`going to UNselect this item`,);
@@ -17,7 +17,7 @@ const select = (item) => {
 
 const addItemToDOM = (item) => {
   let itemNode = document.createElement('div')
-  itemNode.addEventListener('click', () => select(itemNode))
+  itemNode.addEventListener('click', () => _select(itemNode))
   // itemNode.addEventListener('click', () => itemNode.classList.add('selected'))
   // assign the read-item class
   itemNode.setAttribute('class', 'read-item')
@@ -66,6 +66,9 @@ exports.showItems = items => {
   // add each item in items to the DOM
 }
 
+exports.select = item => {
+  select(item);
+}
 
 // Add new item
 exports.addItem = item => {
