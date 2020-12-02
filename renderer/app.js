@@ -11,6 +11,23 @@ let showModal = document.getElementById('show-modal'),
   allItems = new Set(),
   exampleUrl = "https://placehold.it/500/500"
 
+// enable / disable submission buttons
+const toggleAddButton = () => {
+  // check state
+  if (addItem.disabled) {
+    // enable
+    addItem.disabled = false
+    addItem.style.opacity = 1
+    addItem.innerText = 'Add Item'
+    closeModal.style.display = 'inline'
+  } else {
+    // disable
+    addItem.disabled = true
+    addItem.style.opacity = 0.5
+    addItem.innerText = 'Adding...'
+    closeModal.style.display = 'none'
+  }
+}
 
 function clearUrlEntry() {
   itemUrl.value = ""
@@ -49,11 +66,6 @@ function addNewItem(newItem) {
     console.log(`a new item was added | creating the HTML`, );
     addItemToPage(newItem)
   }
-  // if (allItems.size !== allItems.add('new poo').size) {
-  //   console.log('YES')
-  // } else {
-  //   console.log('NO')
-  // }
   console.log(`all items: `, allItems)
   // create a new HTML element for the item
   // add the item to the existing page
@@ -61,15 +73,28 @@ function addNewItem(newItem) {
 
 // Handle new item
 addItem.addEventListener('click', e => {
+
   if (itemUrl.value) {
     // add the URL to the list of URLs
+    toggleAddButton()
+    // Note: use IPC to add item via the main process
     let newItem = itemUrl.value
-    addNewItem(newItem)
-    // clear the field
+    ipcRenderer.invoke('new-item', newItem)
+    // NOTE: this would be to handle adding in the renderer only:
+    // addNewItem(newItem)
+    // // clear the field
     clearUrlEntry();
-    setTimeout(() => {
-      alert(`${newItem} added to list`)
-    }, 1)
+    // setTimeout(() => {
+    //   alert(`${newItem} added to list`)
+    // }, 1)
   }
+
 })
+
+// listen for new item from main process
+ipcRenderer.on('new-item-success', (e, newItem) => {
+  console.log(`new Item from main process: `, newItem)
+  toggleAddButton()
+
+});
 console.log(`all Items: `, allItems)
