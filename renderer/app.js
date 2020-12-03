@@ -70,18 +70,8 @@ itemUrl.addEventListener('keyup', e => {  // allow enter key to trigger add
 
 // Navigate item selection with up/down arrows
 document.body.addEventListener('keyup', e => {
-  switch (e.key) {
-    case 'ArrowDown':
-      console.log(`DOWN PRESSED`, )
-      selectOneItemDown()
-      break
-    case 'ArrowUp':
-      console.log(`UP PRESSED`, )
-      selectOneItemUp()
-      break
-    default:
-      console.log(`${e.key} was pressed`, )
-      break
+  if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+    items.changeSelection(e.key)
   }
 });
 

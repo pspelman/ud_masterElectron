@@ -9,15 +9,24 @@ exports.save = () => {
   localStorage.setItem('readit-items', JSON.stringify(this.storage))
 };
 
+let lastSelect = new Date()
 exports.select = e => {
   // first remove any selected item
-  console.log(`removing any selected items`)
+  // lastSelect = !lastSelect ? new Date() : lastSelect  // initialize with the first select
+  if (new Date() < lastSelect.setMilliseconds(lastSelect.getMilliseconds() + 500)) {  // note: trying to 'debounce' a double click since I implemented select and unselect
+    console.log(`debounce - NOT SELECTING`,)
+    return
+  }
+  console.log(`last select: ${lastSelect}`, )
+  console.log(`new select: ${new Date()}`, )
+  lastSelect = new Date()
+  console.log(`removing any selected items`);
   if (e.currentTarget.classList.contains('selected')) {
     e.currentTarget.classList.remove('selected')
     return
   }
   try {
-    document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
+    getSelectedItem().classList.remove('selected')
   } catch (e) {}
   // add the clicked item
   e.currentTarget.classList.add('selected')
@@ -25,16 +34,42 @@ exports.select = e => {
 
 exports.changeSelection = keyPress => {
   console.log(`${keyPress} was pressed --> changing selection`, )
-  if (!document.getElementsByClassName('read-item selected')[0]) {
+  let selectedItem = getSelectedItem()
+  if (!selectedItem) {
     // nothing is selected --
     // downArrow start at top
-    if (keyPress === '') {
+    if (keyPress === 'ArrowDown') {
       console.log(`select starting at TOP`,);
-    } else {
-      console.log(`select starting at bottom`, )
+    } else if (keyPress === 'ArrowUp') {
+      console.log(`select starting at BOTTOM`,);
     }
-    // upArrow start at bottom
+  } else {
+    // something is already selected
+    if (keyPress === 'ArrowDown' && selectedItem.nextElementSibling) {
+      selectedItem.classList.remove('selected')
+      selectedItem.nextElementSibling.classList.add('selected')
+    } else if (keyPress === 'ArrowUp'&& selectedItem.previousElementSibling) {
+      selectedItem.classList.remove('selected')
+      selectedItem.previousElementSibling.classList.add('selected')
+    }
   }
+}
+
+function getSelectedItem() {
+  return document.getElementsByClassName('read-item selected')[0];
+}
+
+exports.openItem = () => {
+  if (!this.storage.length) return  // prevent trying this if there are no items
+
+  // get the selected item
+  let selectedItem = getSelectedItem()
+
+  // get the item URL
+  let contentURL = selectedItem.dataset.url
+
+  console.log(`opening item: `, contentURL)
+
 
 }
 
@@ -52,35 +87,21 @@ exports.showItems = items => {
 }
 
 
-/*
-  // Create the new DOM node
-  let itemNode = document.createElement('div')
-  itemNode.addEventListener('click', () => select(itemNode))
-  // itemNode.addEventListener('click', () => itemNode.classList.add('selected'))
-  // assign the read-item class
-  itemNode.setAttribute('class', 'read-item')
-  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
-
-  // add the new node to the other "items"
-  // itemNode.addEventListener('click', () => console.log(`clicked ${itemNode.innerHTML}`, )
-  // )
-  items.appendChild(itemNode);
-  // if it is the first item, select it
-  // if (document.getElementsByClassName('read-item').length === 1) {
-  //   itemNode.classList.add('selected')
-  // }
-*/
 // Add new item
 exports.addItem = (item, newItem = false) => {
   // new item node
   let itemNode = document.createElement('div')
 
+  // add HTML for the class and content
+  itemNode.setAttribute('class', 'read-item')
+  itemNode.setAttribute('data-url', item.url)
+  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
+
   // attach a click listener to select / unselect
   itemNode.addEventListener('click', this.select)
 
-  // add HTML for the class and content
-  itemNode.setAttribute('class', 'read-item')
-  itemNode.innerHTML = `<img src="${item.screenshot}" alt="placeholder for ${item.url}"> <h2>${item.title}</h2>`
+  // attach a double click listener for opening the link
+  itemNode.addEventListener('dblclick', this.openItem)
 
   // add it to the other items
   items.appendChild(itemNode)
