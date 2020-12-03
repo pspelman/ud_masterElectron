@@ -131,7 +131,7 @@ addItem.addEventListener('click', e => {
 ipcRenderer.on('new-item-success', (e, newItem) => {
 
   // Now that the new item has been created, pass to the items module to handle
-  items.addItem(newItem)
+  items.addItem(newItem, true)
   hideModal()
   toggleAddButton()
 

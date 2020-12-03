@@ -4,6 +4,11 @@ let items = document.getElementById('items')
 // set up local storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
 
+if (exports.storage) {
+  // exports.storage.forEach((item) => addItemToDOM(item))
+  exports.storage.forEach((item) => this.addItem(item, false))
+}
+
 // persist storage
 exports.save = () => {
   localStorage.setItem('readit-items', JSON.stringify(this.storage))
@@ -84,8 +89,3 @@ exports.addItem = (item, newItem = false) => {
     this.save()
   }
 };
-
-if (exports.storage) {
-  // exports.storage.forEach((item) => addItemToDOM(item))
-  exports.storage.forEach((item) => this.addItem(item, false))
-}

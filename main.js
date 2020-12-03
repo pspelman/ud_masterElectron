@@ -9,7 +9,6 @@ let mainWindow
 // listen for new item request
 ipcMain.handle('new-item', (e, itemUrl) => {
   console.log(`trying to add new value: `, itemUrl)
-
   readItem(itemUrl, item => {  // get the new item and send back
     e.sender.send('new-item-success', item)
   })
