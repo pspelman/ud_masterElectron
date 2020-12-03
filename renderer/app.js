@@ -148,6 +148,7 @@ ipcRenderer.on('new-item-success', (e, newItem) => {
 // listen for menu message from main
 ipcRenderer.on('menu-show-modal', () => showModal.click());
 ipcRenderer.on('menu-open-item', () => items.openItem());
+ipcRenderer.on('menu-focus-search', () => search.focus());
 ipcRenderer.on('menu-delete-item', () => {
   let selectedItem = items.getSelectedItem()
   items.delete(selectedItem.index)

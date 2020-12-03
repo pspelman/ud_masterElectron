@@ -10,7 +10,7 @@ module.exports = (appWin) => {
       submenu: [
         {
           label: 'Add New',
-          accelerator: 'CmdOrCtrl+O',
+          accelerator: 'CmdOrCtrl+N',
           click: () => {
             // use the appWin instance for messaging
             appWin.send('menu-show-modal')
@@ -35,6 +35,13 @@ module.exports = (appWin) => {
           accelerator: 'CmdOrCtrl+Shift+Enter',
           click: () => {
             appWin.send('menu-open-item-in-default')
+          }
+        },
+        {
+          label: 'Search Items',
+          accelerator: 'CmdOrCtrl+F',
+          click: () => {
+            appWin.send('menu-focus-search')
           }
         },
       ]
