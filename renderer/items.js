@@ -69,7 +69,8 @@ exports.openItem = () => {
   let contentURL = selectedItem.dataset.url
 
   console.log(`opening item: `, contentURL)
-
+  // OPEN the item in a BrowserWindow instance
+  let readerWin = window.open(contentURL)
 
 }
 
