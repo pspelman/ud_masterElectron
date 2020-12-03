@@ -4,11 +4,6 @@ let items = document.getElementById('items')
 // set up local storage
 exports.storage = JSON.parse(localStorage.getItem('readit-items')) || []
 
-if (exports.storage) {
-  // exports.storage.forEach((item) => addItemToDOM(item))
-  exports.storage.forEach((item) => this.addItem(item, false))
-}
-
 // persist storage
 exports.save = () => {
   localStorage.setItem('readit-items', JSON.stringify(this.storage))
@@ -21,12 +16,26 @@ exports.select = e => {
     e.currentTarget.classList.remove('selected')
     return
   }
-
   try {
     document.getElementsByClassName('read-item selected')[0].classList.remove('selected')
   } catch (e) {}
   // add the clicked item
   e.currentTarget.classList.add('selected')
+}
+
+exports.changeSelection = keyPress => {
+  console.log(`${keyPress} was pressed --> changing selection`, )
+  if (!document.getElementsByClassName('read-item selected')[0]) {
+    // nothing is selected --
+    // downArrow start at top
+    if (keyPress === '') {
+      console.log(`select starting at TOP`,);
+    } else {
+      console.log(`select starting at bottom`, )
+    }
+    // upArrow start at bottom
+  }
+
 }
 
 exports.clearItems = () => {
@@ -89,3 +98,8 @@ exports.addItem = (item, newItem = false) => {
     this.save()
   }
 };
+
+if (exports.storage) {
+  // exports.storage.forEach((item) => addItemToDOM(item))
+  exports.storage.forEach((item) => this.addItem(item, false))
+}
