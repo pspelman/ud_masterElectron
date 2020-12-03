@@ -1,5 +1,6 @@
 // Modules
 const fs = require('fs')
+const {shell} = require('electron')
 
 // DOM Nodes
 let items = document.getElementById('items')
@@ -197,4 +198,13 @@ exports.addItem = (item, newItem = false) => {
 if (exports.storage) {
   // exports.storage.forEach((item) => addItemToDOM(item))
   exports.storage.forEach((item) => this.addItem(item, false))
+}
+
+// open selected item in native browser
+exports.openNative = () => {
+  // only if we have items (in case of menu open
+  let selectedItem = this.getSelectedItem();
+  if (selectedItem.node) {
+    shell.openExternal(selectedItem.node.dataset.url)
+  }
 }

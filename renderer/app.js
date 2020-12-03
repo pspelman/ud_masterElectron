@@ -89,6 +89,7 @@ function hideModal() {
 closeModal.addEventListener('click', e => {
   hideModal();
 })
+
 clrItems.addEventListener('click', ev => {
   items.clearItems()
 })
@@ -142,4 +143,16 @@ ipcRenderer.on('new-item-success', (e, newItem) => {
   hideModal()
   toggleAddButton()
 
+});
+
+// listen for menu message from main
+ipcRenderer.on('menu-show-modal', () => showModal.click());
+ipcRenderer.on('menu-open-item', () => items.openItem());
+ipcRenderer.on('menu-delete-item', () => {
+  let selectedItem = items.getSelectedItem()
+  items.delete(selectedItem.index)
+})
+ipcRenderer.on('menu-open-item-in-default', () => {
+  // let selectedItem = items.getSelectedItem()
+  items.openNative()
 });

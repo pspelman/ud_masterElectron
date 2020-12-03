@@ -2,12 +2,42 @@
 const {shell, Menu} = require('electron')
 
 // Module function to create the main app menu
-module.exports = () => {
+module.exports = (appWin) => {
   // menu template
   let template = [
     {
       label: 'Items',
-      submenu: []
+      submenu: [
+        {
+          label: 'Add New',
+          accelerator: 'CmdOrCtrl+O',
+          click: () => {
+            // use the appWin instance for messaging
+            appWin.send('menu-show-modal')
+          },
+        },
+        {
+          label: 'Open selected',
+          accelerator: 'CmdOrCtrl+Enter',
+          click: () => {
+            appWin.send('menu-open-item')
+          }
+        },
+        {
+          label: 'Delete Item',
+          accelerator: 'CmdOrCtrl+Backspace',
+          click: () => {
+            appWin.send('menu-delete-item')
+          }
+        },
+        {
+          label: 'Open in Browser',
+          accelerator: 'CmdOrCtrl+Shift+Enter',
+          click: () => {
+            appWin.send('menu-open-item-in-default')
+          }
+        },
+      ]
     },
     {role: 'editMenu'},
     {role: 'windowMenu'},
@@ -16,7 +46,9 @@ module.exports = () => {
       submenu: [
         {
           label: 'Learn more',
-          click: () => {shell.openExternal('http://philspelman.com')}
+          click: () => {
+            shell.openExternal('http://philspelman.com')
+          }
         }
       ]
     },

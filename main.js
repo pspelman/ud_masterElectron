@@ -33,7 +33,7 @@ function createWindow() {
   })
 
   // create the app menu
-  appMenu()
+  appMenu(mainWindow)
 
   // Load main.html into the new BrowserWindow
   mainWindow.loadFile('renderer/main.html')
