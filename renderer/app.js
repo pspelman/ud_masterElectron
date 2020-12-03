@@ -68,6 +68,23 @@ itemUrl.addEventListener('keyup', e => {  // allow enter key to trigger add
   if (e.key === 'Enter') addItem.click()
 })
 
+// Navigate item selection with up/down arrows
+document.body.addEventListener('keyup', e => {
+  switch (e.key) {
+    case 'ArrowDown':
+      console.log(`DOWN PRESSED`, )
+      selectOneItemDown()
+      break
+    case 'ArrowUp':
+      console.log(`UP PRESSED`, )
+      selectOneItemUp()
+      break
+    default:
+      console.log(`${e.key} was pressed`, )
+      break
+  }
+});
+
 showModal.addEventListener('click', e => {
   modal.style.display = 'flex'
   itemUrl.focus()  // note: focus on the input
