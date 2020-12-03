@@ -26,5 +26,20 @@
     "bcrypt": "^5.0.0",
     "colors": "^1.4.0",
     "electron-window-state": "^5.0.3"
+  },
+  "build": {
+    "appId": "com.readit.philspelman",
+    "copyright": "Copyright philspelman.com",
+    "mac": {
+      "category": "public-app-category.productivity",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "zip"
+    },
+    "linux": {
+      "category": "Utility"
+    }
   }
+
 }
