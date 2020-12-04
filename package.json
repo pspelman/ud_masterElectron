@@ -1,6 +1,6 @@
 {
   "name": "readits",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Practice Project for Master Electron",
   "main": "main.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "watch": "nodemon --exec electron -e js,jade,html,css .",
     "build": "electron-builder -m",
     "release": "electron-builder -m -p 'onTagOrDraft'",
+    "mac": "rm -rf ./dist && GH_TOKEN=$( cat private/GH_TOKEN.txt ) electron-builder -m -p 'onTagOrDraft'",
     "win-cert": "electron-builder create-self-signed-cert"
   },
   "repository": "https://github.com/pspelman/ud_masterElectron",
@@ -41,7 +42,7 @@
       "category": "public-app-category.productivity"
     },
     "win": {
-      "certificateFile": "private/philipSpelman.p12",
+      "certificateFile": "private/philipSpelmanDev.p12",
       "certificatePassword": "",
       "verifyUpdateCodeSignature": false
     },
