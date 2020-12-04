@@ -15,6 +15,10 @@ const tbLabel = new TouchBar.TouchBarLabel({
   label: 'ReadIts',
 })
 
+const tbTheme = new TouchBar.TouchBarLabel({
+  label: 'Theme',
+})
+
 // Touchbar button
 const tbAddNew = new TouchBar.TouchBarButton({
   label: 'new readIt',
@@ -34,18 +38,47 @@ const tbDevTools = new TouchBar.TouchBarButton({
   }
 })
 
-// create a touchbar spacer
-// const tbSpacerSM = new TouchBar.TouchBarSpacer({size: 'small'})
+// Touchbar Color Picer
+const tbPicker = new TouchBar.TouchBarColorPicker({
+  change: color => {
+    console.log(`trying to change color to ${color}`, )
+    mainWindow.webContents.insertCSS(`body {background-color: ${color};}`)
+  }
+})
+
+// Touchbar Slider
+const tbSlider = new TouchBar.TouchBarSlider({
+  label: 'Size',
+  minValue: 500,
+  maxValue: 1000,
+  value: 500, // this is the initial value
+  change: val => {
+    console.log(`trying to change the size of the window to ${val}`, )
+    mainWindow.setSize(val, val, true)  // true value makes the window resizing smoother
+  }
+})
+
+const tbPopover = new TouchBar.TouchBarPopover({
+  label: 'Size',
+  items: new TouchBar({
+    items: [tbSlider]
+  })
+})
+
+// touchbar spacers
 const tbSpacerSM = () => new TouchBar.TouchBarSpacer({size: 'small'})
 const tbSpacerLG = () => new TouchBar.TouchBarSpacer({size: 'large'})
 const tbSpacerFLX = () => new TouchBar.TouchBarSpacer({size: 'flexible'})
-// const tbSpacerLG = new TouchBar.TouchBarSpacer({size: 'large'})
-// const tbSpacerFLX = new TouchBar.TouchBarSpacer({size: 'flexible'})
 
 // Create the new touchbar
 const touchbar = new TouchBar({
   items: [
     tbLabel,
+    tbSpacerLG(),
+    tbTheme,
+    tbPicker,
+    // tbSlider,
+    tbPopover,
     tbSpacerFLX(),
     tbAddNew,
     tbSpacerSM(),
@@ -84,12 +117,12 @@ function createWindow() {
 
   // create the app menu
   appMenu(mainWindow)
+  if (process.platform === 'darwin') mainWindow.setTouchBar(touchbar)
 
   // Load main.html into the new BrowserWindow
   mainWindow.loadFile('renderer/main.html')
 
   // Set touchbar on Mac
-  if (process.platform === 'darwin') mainWindow.setTouchBar(touchbar)
 
   // Open DevTools - Remove for PRODUCTION!
   // mainWindow.webContents.openDevTools();
