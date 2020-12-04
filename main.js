@@ -41,7 +41,7 @@ const tbDevTools = new TouchBar.TouchBarButton({
 // Touchbar Color Picer
 const tbPicker = new TouchBar.TouchBarColorPicker({
   change: color => {
-    console.log(`trying to change color to ${color}`, )
+    mainWindow.send('menu-set-background-color', {color: color})
     mainWindow.webContents.insertCSS(`body {background-color: ${color};}`)
   }
 })

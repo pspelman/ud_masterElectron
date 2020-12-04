@@ -146,6 +146,10 @@ ipcRenderer.on('new-item-success', (e, newItem) => {
 });
 
 // listen for menu message from main
+ipcRenderer.on('menu-set-background-color', (event, args) => {
+  // console.log(`trying to set the background color to `, args.color)
+  document.body.style.backgroundColor = args.color
+})
 ipcRenderer.on('menu-show-modal', () => showModal.click());
 ipcRenderer.on('menu-open-item', () => items.openItem());
 ipcRenderer.on('menu-focus-search', () => search.focus());
