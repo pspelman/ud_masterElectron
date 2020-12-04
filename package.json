@@ -1,6 +1,6 @@
 {
   "name": "readits",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Practice Project for Master Electron",
   "main": "main.js",
   "scripts": {
@@ -23,6 +23,7 @@
   "devDependencies": {
     "electron": "^9.0.0",
     "electron-builder": "^22.9.1",
+    "electron-notarize": "^1.0.0",
     "nodemon": "^2.0.6"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
   "build": {
     "appId": "com.readits.philspelman",
     "copyright": "Copyright philspelman.com",
+    "afterSign": "build/notarize.js",
     "publish": {
       "provider": "github"
     },
