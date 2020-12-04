@@ -7,7 +7,9 @@
     "start": "electron .",
     "debug": "electron --inspect=5858 .",
     "watch": "nodemon --exec electron -e js,jade,html,css .",
-    "build": "electron-builder --help"
+    "build": "electron-builder -m",
+    "release": "electron-builder -m -p 'onTagOrDraft",
+    "win-cert": "electron-builder create-self-signed-cert"
   },
   "repository": "https://github.com/pspelman/ud_masterElectron",
   "keywords": [
@@ -28,14 +30,18 @@
     "electron-window-state": "^5.0.3"
   },
   "build": {
-    "appId": "com.readit.philspelman",
+    "appId": "com.readits.philspelman",
     "copyright": "Copyright philspelman.com",
+    "publish": {
+      "provider": "github"
+    },
     "mac": {
       "category": "public-app-category.productivity",
-      "target": "dmg"
     },
     "win": {
-      "target": "zip"
+      "certificateFile": "private/philipSpelman.p12",
+      "certificatePassword": "",
+      "verifyUpdateCodeSignature": false
     },
     "linux": {
       "category": "Utility"
